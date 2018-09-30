@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meet03;
+package meet0304;
 
 import Praktikum03.*;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import meet03.Mahasiswa;
+import meet0304.Mahasiswa;
 
 /**
  *
@@ -39,6 +39,20 @@ public class SerializationDemo {
             System.out.println(e.getMessage());
         }
         
+        return pList;
+    }
+    
+    public byte[] des(String filename) {
+        byte[] pList = null;
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            pList = (byte[]) in.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("a problem occured during deserialize %s%n" + filename);
+            System.out.println(e.getMessage());
+        }
+
         return pList;
     }
     

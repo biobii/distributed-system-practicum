@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meet03;
+package meet0304;
 
 import Praktikum03.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import meet03.Mahasiswa;
-import meet03.SerializationDemo;
+import meet0304.Mahasiswa;
+import meet0304.SerializationDemo;
 
 /**
  *
@@ -123,5 +123,4 @@ public class SerializationObject {
             }
         }
     }
-    
 }

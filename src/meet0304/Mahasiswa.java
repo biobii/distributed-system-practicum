@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meet03;
+package meet0304;
 
 import Praktikum03.*;
 import java.io.Serializable;
