@@ -40,17 +40,23 @@ public class Server {
 
         for (;;) {
             try {
+                
                 DatagramPacket packet = new DatagramPacket(buffer, BUFSIZE);
                 socket.receive(packet);
 
-                this.serialize(packet.getData(), "mahasiswa.ser");
+                if (packet.getLength() == 1) {
+                    byte[] readbuf = new byte[BUFSIZE];
+                    readbuf = this.deserialize("mahasiswa.ser");
+                    packet = new DatagramPacket(readbuf, readbuf.length, packet.getAddress(), packet.getPort());
+                } else {
+                    this.serialize(packet.getData(), "mahasiswa.ser");
 
-                System.out.println("Packet received from "
-                        + packet.getAddress() + " : "
-                        + packet.getPort()
-                        + " of length " + packet.getLength()
-                );
-
+                    System.out.println("Packet received from "
+                            + packet.getAddress() + " : "
+                            + packet.getPort()
+                            + " of length " + packet.getLength()
+                    );
+                }
                 socket.send(packet);
             } catch (IOException e) {
                 System.err.println("Error: " + e);
@@ -64,6 +70,20 @@ public class Server {
         } catch (IOException ex) {
             System.out.println("a problem occured during serialization.\n" + ex.getMessage());
         }
+    }
+    
+    public byte[] deserialize(String filename) {
+        byte[] pList = null;
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            pList = (byte[]) in.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("a problem occured during deserialize %s%n" + filename);
+            System.out.println(e.getMessage());
+        }
+
+        return pList;
     }
 
     public static void main(String[] args) {

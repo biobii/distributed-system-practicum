@@ -121,8 +121,41 @@ public class Client {
                     break;
                     
                 case "4":
-                    byte[] readLists = demo.des(fileName);
-                    System.out.println(new String(readLists));
+                    ByteArrayOutputStream bouts = new ByteArrayOutputStream();
+                    PrintStream pouts = new PrintStream(bouts);
+
+                    pouts.print(newLists);
+
+                    byte[] barrays = bouts.toByteArray();
+
+                    DatagramPacket packets = new DatagramPacket(barrays, barrays.length, addr, SERVICE_PORT);
+                    socket.send(packets);
+
+                    byte[] recbufs = new byte[BUFSIZE];
+                    DatagramPacket receivePackets = new DatagramPacket(recbufs, BUFSIZE);
+
+                    boolean timeouts = false;
+
+                    try {
+                        socket.receive(receivePackets);
+                    } catch (InterruptedIOException e) {
+                        timeouts = true;
+                    }
+
+                    if (!timeouts) {
+                        ByteArrayInputStream bin = new ByteArrayInputStream(
+                                receivePackets.getData(),
+                                0,
+                                receivePackets.getLength()
+                        );
+
+                        BufferedReader reader2 = new BufferedReader(new InputStreamReader(bin));
+                        System.out.println(reader2.readLine());
+                    } else {
+                        System.out.println("Packet lost!");
+                    }
+//                    byte[] readLists = demo.des(fileName);
+//                    System.out.println(new String(readLists));
                     break;
                     
                 case "5":
